@@ -5,7 +5,7 @@ import (
 )
 
 func main()  {
-	_ = NewBoard()
+	_ = NewBoard(9)
 	fmt.Println("hello world!")
 }
 

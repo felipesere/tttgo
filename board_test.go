@@ -5,7 +5,7 @@ import (
 )
 
 func TestBoard_GetPossibleMoves(t *testing.T) {
-	anEmptyBoard := NewBoard()
+	anEmptyBoard := NewBoard(9)
 
 	numberOfPossibleMoves := len(anEmptyBoard.GetPossibleMoves())
 
@@ -15,7 +15,7 @@ func TestBoard_GetPossibleMoves(t *testing.T) {
 }
 
 func TestBoard_MakingAMoveTakesPossibleMovesAway(t *testing.T) {
-	anEmptyBoard := NewBoard()
+	anEmptyBoard := NewBoard(9)
 
 	possibleMoves := anEmptyBoard.GetPossibleMoves()
 
@@ -29,7 +29,7 @@ func TestBoard_MakingAMoveTakesPossibleMovesAway(t *testing.T) {
 }
 
 func TestBoard_CantMarkTheSamePositionTwice(t *testing.T) {
-	anEmptyBoard := NewBoard()
+	anEmptyBoard := NewBoard(9)
 
 	updatedBoard, _ := anEmptyBoard.MakeMove(0, X)
 	updatedBoard, err := updatedBoard.MakeMove(0, X)
@@ -40,7 +40,7 @@ func TestBoard_CantMarkTheSamePositionTwice(t *testing.T) {
 }
 
 func TestBoard_CantMarkOutOfBounds(t *testing.T) {
-	anEmptyBoard := NewBoard()
+	anEmptyBoard := NewBoard(9)
 
 	anEmptyBoard, err := anEmptyBoard.MakeMove(12, X)
 
