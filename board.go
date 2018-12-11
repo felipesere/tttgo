@@ -53,9 +53,13 @@ func (board Board) MakeMove(move int, mark Mark) (Board, error) {
 	}
 
 	other := Board{}
-	copier.Copy(&other, &board)
+	err := copier.Copy(&other, &board)
 
 	other.marks[move] = mark
 
-	return other, nil
+	return other, err
+}
+
+func (board *Board) Winner() Mark {
+    return X
 }

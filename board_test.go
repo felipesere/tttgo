@@ -48,3 +48,17 @@ func TestBoard_CantMarkOutOfBounds(t *testing.T) {
 		t.Errorf("Should not have been able to mark an impossible move on board: %v", anEmptyBoard)
 	}
 }
+
+func TestBoard_FindsAWinnerInTheFirstColumn(t *testing.T) {
+	anEmptyBoard := NewBoard(9)
+
+	first, _ := anEmptyBoard.MakeMove(0, X)
+	second, _ := first.MakeMove(1, X)
+	third, _ := second.MakeMove(2, X)
+
+	winner := third.Winner()
+
+	if winner != X {
+		t.Errorf("Was not able to find winner on %v", third)
+	}
+}
