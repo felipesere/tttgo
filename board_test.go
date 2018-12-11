@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
@@ -9,9 +10,7 @@ func TestBoard_GetPossibleMoves(t *testing.T) {
 
 	numberOfPossibleMoves := len(anEmptyBoard.GetPossibleMoves())
 
-	if numberOfPossibleMoves != 9 {
-		t.Errorf("Was expecting at least 9 possible moves, but got %d", numberOfPossibleMoves)
-	}
+	assert.Equal(t, 9, numberOfPossibleMoves)
 }
 
 func TestBoard_MakingAMoveTakesPossibleMovesAway(t *testing.T) {
@@ -23,9 +22,7 @@ func TestBoard_MakingAMoveTakesPossibleMovesAway(t *testing.T) {
 
 	numberOfPossibleMoves := len(updatedBoard.GetPossibleMoves())
 
-	if numberOfPossibleMoves != 8 {
-		t.Errorf("Was expecting at least 8 possible moves, but got %d", numberOfPossibleMoves)
-	}
+	assert.Equal(t, 8, numberOfPossibleMoves)
 }
 
 func TestBoard_CantMarkTheSamePositionTwice(t *testing.T) {
@@ -34,9 +31,7 @@ func TestBoard_CantMarkTheSamePositionTwice(t *testing.T) {
 	updatedBoard, _ := anEmptyBoard.MakeMove(0, X)
 	updatedBoard, err := updatedBoard.MakeMove(0, X)
 
-	if err == nil {
-		t.Errorf("Should not have been able to mark the same spot twice: %v", updatedBoard)
-	}
+	assert.NotNil(t, err, "Should not have been able to mark the same spot twice")
 }
 
 func TestBoard_CantMarkOutOfBounds(t *testing.T) {
@@ -44,9 +39,7 @@ func TestBoard_CantMarkOutOfBounds(t *testing.T) {
 
 	anEmptyBoard, err := anEmptyBoard.MakeMove(12, X)
 
-	if err == nil {
-		t.Errorf("Should not have been able to mark an impossible move on board: %v", anEmptyBoard)
-	}
+	assert.NotNil(t, err, "Should not have been able to mark an impossible move on board")
 }
 
 func TestBoard_FindsAWinnerInTheFirstColumn(t *testing.T) {
@@ -58,7 +51,5 @@ func TestBoard_FindsAWinnerInTheFirstColumn(t *testing.T) {
 
 	winner := third.Winner()
 
-	if winner != X {
-		t.Errorf("Was not able to find winner on %v", third)
-	}
+	assert.Equal(t, X, winner, "Was not able to find winner")
 }

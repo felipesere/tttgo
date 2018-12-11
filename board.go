@@ -29,7 +29,7 @@ func (board *Board) isMovePossible(target int) bool {
 
 func NewBoard(size int) Board {
 	return Board{
-		size: size,
+		size:  size,
 		marks: make([]Mark, size),
 	}
 }
@@ -61,5 +61,5 @@ func (board Board) MakeMove(move int, mark Mark) (Board, error) {
 }
 
 func (board *Board) Winner() Mark {
-    return X
+	return X
 }
