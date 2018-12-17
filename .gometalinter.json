@@ -1,0 +1,15 @@
+{
+  "Enable": [
+    "deadcode",
+    "unconvert",
+    "varcheck",
+    "structcheck",
+    "maligned",
+    "errcheck",
+    "dupl",
+    "interfacer",
+    "unconvert",
+    "goconst",
+    "gosec"
+  ]
+}
