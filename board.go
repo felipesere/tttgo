@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-
 	"github.com/jinzhu/copier"
 )
 
@@ -68,14 +67,12 @@ func (board Board) MakeMove(move int, mark Mark) (Board, error) {
 func (board *Board) Winner() Mark {
 	lines := make([][]Mark, 0)
 
-	// [ 0 1 2
-	//   3 4 5
-	//   6 7 8 ]
-
 	for idx := 0; idx < board.size; idx++ {
 		lines = append(lines, rowAt(board, idx))
 		lines = append(lines, columnAt(board, idx))
 	}
+
+	lines = append(lines, diagonals(board)...)
 
 	return findWinner(lines)
 }
@@ -95,6 +92,20 @@ func columnAt(board *Board, number int) []Mark {
 	}
 
 	return column
+}
+
+func diagonals(board *Board) [][]Mark {
+	diagonal_one := make([]Mark, 0)
+	diagonal_two := make([]Mark, 0)
+
+	for idx := 0; idx < board.size; idx++ {
+		x := idx + idx*board.size
+		y := (idx + 1) * (board.size - 1)
+		diagonal_one = append(diagonal_one, board.marks[x])
+		diagonal_two = append(diagonal_two, board.marks[y])
+	}
+
+	return [][]Mark{diagonal_one, diagonal_two}
 }
 
 func findWinner(lines [][]Mark) Mark {

@@ -65,3 +65,27 @@ func TestBoard_FindsAWinnerInTheFirstColumn(t *testing.T) {
 
 	assert.Equal(t, X, winner, "Was not able to find winner")
 }
+
+func TestBoard_FindsAWinnerInTheFirstDiagonal(t *testing.T) {
+	anEmptyBoard := NewBoard(3)
+
+	first, _ := anEmptyBoard.MakeMove(0, X)
+	second, _ := first.MakeMove(4, X)
+	third, _ := second.MakeMove(8, X)
+
+	winner := third.Winner()
+
+	assert.Equal(t, X, winner, "Was not able to find winner")
+}
+
+func TestBoard_FindsAWinnerInTheSecondDiagonal(t *testing.T) {
+	anEmptyBoard := NewBoard(3)
+
+	first, _ := anEmptyBoard.MakeMove(2, X)
+	second, _ := first.MakeMove(4, X)
+	third, _ := second.MakeMove(6, X)
+
+	winner := third.Winner()
+
+	assert.Equal(t, X, winner, "Was not able to find winner")
+}
