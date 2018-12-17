@@ -11,7 +11,7 @@ type Mark string
 const (
 	X     Mark = "X"
 	O     Mark = "O"
-	EMPTY Mark = ""
+	EMPTY Mark = "-"
 )
 
 type Board struct {
@@ -29,9 +29,14 @@ func (board *Board) isMovePossible(target int) bool {
 }
 
 func NewBoard(size int) Board {
+	marks := make([]Mark, size*size)
+	for idx := range marks {
+		marks[idx] = EMPTY
+	}
+
 	return Board{
 		size:  size,
-		marks: make([]Mark, size*size),
+		marks: marks,
 	}
 }
 
@@ -43,6 +48,7 @@ func (board *Board) GetPossibleMoves() []int {
 			result = append(result, idx)
 		}
 	}
+
 	return result
 }
 
@@ -67,8 +73,8 @@ func (board *Board) Winner() Mark {
 	//   6 7 8 ]
 
 	for idx := 0; idx < board.size; idx++ {
-		row := rowAt(board, idx)
-		lines = append(lines, row)
+		lines = append(lines, rowAt(board, idx))
+		lines = append(lines, columnAt(board, idx))
 	}
 
 	return findWinner(lines)
@@ -78,6 +84,17 @@ func rowAt(board *Board, number int) []Mark {
 	beginning := number * board.size
 	end := beginning + board.size
 	return board.marks[beginning:end]
+}
+
+func columnAt(board *Board, number int) []Mark {
+	column := make([]Mark, 0)
+
+	for idx := 0; idx < board.size; idx++ {
+		realIndex := number + idx*board.size
+		column = append(column, board.marks[realIndex])
+	}
+
+	return column
 }
 
 func findWinner(lines [][]Mark) Mark {
@@ -96,8 +113,8 @@ func hasWinner(line []Mark) *Mark {
 	if first == EMPTY {
 		return nil
 	}
-	for idx := range line {
-		if line[idx] != first {
+	for _, mark := range line {
+		if mark != first {
 			return nil
 		}
 	}

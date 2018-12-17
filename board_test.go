@@ -55,7 +55,6 @@ func TestBoard_FindsAWinnerInTheFirstRow(t *testing.T) {
 }
 
 func TestBoard_FindsAWinnerInTheFirstColumn(t *testing.T) {
-	t.Skip()
 	anEmptyBoard := NewBoard(3)
 
 	first, _ := anEmptyBoard.MakeMove(0, X)
