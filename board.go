@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+
 	"github.com/jinzhu/copier"
 )
 
@@ -30,18 +31,16 @@ func (board *Board) isMovePossible(target int) bool {
 func NewBoard(size int) Board {
 	return Board{
 		size:  size,
-		marks: make([]Mark, size),
+		marks: make([]Mark, size*size),
 	}
 }
 
 func (board *Board) GetPossibleMoves() []int {
 	result := make([]int, 0)
 
-	counter := 0
 	for idx, mark := range board.marks {
 		if mark == EMPTY {
 			result = append(result, idx)
-			counter += 1
 		}
 	}
 	return result
@@ -61,5 +60,46 @@ func (board Board) MakeMove(move int, mark Mark) (Board, error) {
 }
 
 func (board *Board) Winner() Mark {
-	return X
+	lines := make([][]Mark, 0)
+
+	// [ 0 1 2
+	//   3 4 5
+	//   6 7 8 ]
+
+	for idx := 0; idx < board.size; idx++ {
+		row := rowAt(board, idx)
+		lines = append(lines, row)
+	}
+
+	return findWinner(lines)
+}
+
+func rowAt(board *Board, number int) []Mark {
+	beginning := number * board.size
+	end := beginning + board.size
+	return board.marks[beginning:end]
+}
+
+func findWinner(lines [][]Mark) Mark {
+	for _, line := range lines {
+		winner := hasWinner(line)
+		if winner != nil {
+			return *winner
+		}
+	}
+	return EMPTY
+}
+
+func hasWinner(line []Mark) *Mark {
+	first := line[0]
+
+	if first == EMPTY {
+		return nil
+	}
+	for idx := range line {
+		if line[idx] != first {
+			return nil
+		}
+	}
+	return &first
 }

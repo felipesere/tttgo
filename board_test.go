@@ -6,7 +6,7 @@ import (
 )
 
 func TestBoard_GetPossibleMoves(t *testing.T) {
-	anEmptyBoard := NewBoard(9)
+	anEmptyBoard := NewBoard(3)
 
 	numberOfPossibleMoves := len(anEmptyBoard.GetPossibleMoves())
 
@@ -14,7 +14,7 @@ func TestBoard_GetPossibleMoves(t *testing.T) {
 }
 
 func TestBoard_MakingAMoveTakesPossibleMovesAway(t *testing.T) {
-	anEmptyBoard := NewBoard(9)
+	anEmptyBoard := NewBoard(3)
 
 	possibleMoves := anEmptyBoard.GetPossibleMoves()
 
@@ -26,7 +26,7 @@ func TestBoard_MakingAMoveTakesPossibleMovesAway(t *testing.T) {
 }
 
 func TestBoard_CantMarkTheSamePositionTwice(t *testing.T) {
-	anEmptyBoard := NewBoard(9)
+	anEmptyBoard := NewBoard(3)
 
 	updatedBoard, _ := anEmptyBoard.MakeMove(0, X)
 	updatedBoard, err := updatedBoard.MakeMove(0, X)
@@ -35,19 +35,32 @@ func TestBoard_CantMarkTheSamePositionTwice(t *testing.T) {
 }
 
 func TestBoard_CantMarkOutOfBounds(t *testing.T) {
-	anEmptyBoard := NewBoard(9)
+	anEmptyBoard := NewBoard(3)
 
 	anEmptyBoard, err := anEmptyBoard.MakeMove(12, X)
 
 	assert.NotNil(t, err, "Should not have been able to mark an impossible move on board")
 }
 
+func TestBoard_FindsAWinnerInTheFirstRow(t *testing.T) {
+	anEmptyBoard := NewBoard(3)
+
+	first, _ := anEmptyBoard.MakeMove(0, O)
+	second, _ := first.MakeMove(1, O)
+	third, _ := second.MakeMove(2, O)
+
+	winner := third.Winner()
+
+	assert.Equal(t, O, winner, "Was not able to find winner")
+}
+
 func TestBoard_FindsAWinnerInTheFirstColumn(t *testing.T) {
-	anEmptyBoard := NewBoard(9)
+	t.Skip()
+	anEmptyBoard := NewBoard(3)
 
 	first, _ := anEmptyBoard.MakeMove(0, X)
-	second, _ := first.MakeMove(1, X)
-	third, _ := second.MakeMove(2, X)
+	second, _ := first.MakeMove(3, X)
+	third, _ := second.MakeMove(6, X)
 
 	winner := third.Winner()
 
