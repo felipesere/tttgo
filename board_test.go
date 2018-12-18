@@ -2,6 +2,7 @@ package main
 
 import (
 	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/ginkgo/extensions/table"
 	. "github.com/onsi/gomega"
 )
 
@@ -43,43 +44,24 @@ var _ = Describe("a board", func() {
 		Expect(err).To(HaveOccurred())
 	})
 
-	It("finds a winner in the first row", func() {
-		first, _ := anEmptyBoard.MakeMove(0, O)
-		second, _ := first.MakeMove(1, O)
-		third, _ := second.MakeMove(2, O)
+	DescribeTable("finds winning combinations",
+		func(first, second, third int, winner Mark) {
+			startingBoard := NewBoard(3)
+			b, _ := startingBoard.MakeMove(first, winner)
+			b, _ = b.MakeMove(second, winner)
+			b, _ = b.MakeMove(third, winner)
 
-		winner := third.Winner()
+			actualWinner := b.Winner()
 
-		Expect(winner).To(Equal(O))
-	})
-
-	It("finds a winner in the first column", func() {
-		first, _ := anEmptyBoard.MakeMove(0, X)
-		second, _ := first.MakeMove(3, X)
-		third, _ := second.MakeMove(6, X)
-
-		winner := third.Winner()
-
-		Expect(winner).To(Equal(X))
-	})
-
-	It("finds a winner in the first diagonal", func() {
-		first, _ := anEmptyBoard.MakeMove(0, X)
-		second, _ := first.MakeMove(4, X)
-		third, _ := second.MakeMove(8, X)
-
-		winner := third.Winner()
-
-		Expect(winner).To(Equal(X))
-	})
-
-	It("finds a winner in the second diagonal", func() {
-		first, _ := anEmptyBoard.MakeMove(2, X)
-		second, _ := first.MakeMove(4, X)
-		third, _ := second.MakeMove(6, X)
-
-		winner := third.Winner()
-
-		Expect(winner).To(Equal(X))
-	})
+			Expect(actualWinner).To(Equal(winner))
+		},
+		Entry("first row", 0, 1, 2, O),
+		Entry("second row", 3, 4, 5, O),
+		Entry("third row", 6, 7, 8, O),
+		Entry("first column", 0, 3, 6, O),
+		Entry("second column", 1, 4, 7, O),
+		Entry("third column", 2, 5, 8, O),
+		Entry("first diagonal", 0, 4, 8, O),
+		Entry("second diagonal", 2, 4, 6, O),
+	)
 })
