@@ -7,6 +7,8 @@ import (
 
 type Mark string
 
+type Line = []Mark
+
 const (
 	X     Mark = "X"
 	O     Mark = "O"
@@ -77,13 +79,13 @@ func (board *Board) Winner() Mark {
 	return findWinner(lines)
 }
 
-func rowAt(board *Board, number int) []Mark {
+func rowAt(board *Board, number int) Line {
 	beginning := number * board.size
 	end := beginning + board.size
 	return board.marks[beginning:end]
 }
 
-func columnAt(board *Board, number int) []Mark {
+func columnAt(board *Board, number int) Line {
 	column := make([]Mark, 0)
 
 	for idx := 0; idx < board.size; idx++ {
@@ -94,7 +96,7 @@ func columnAt(board *Board, number int) []Mark {
 	return column
 }
 
-func diagonals(board *Board) [][]Mark {
+func diagonals(board *Board) []Line {
 	diagonal_one := make([]Mark, 0)
 	diagonal_two := make([]Mark, 0)
 
@@ -108,7 +110,7 @@ func diagonals(board *Board) [][]Mark {
 	return [][]Mark{diagonal_one, diagonal_two}
 }
 
-func findWinner(lines [][]Mark) Mark {
+func findWinner(lines []Line) Mark {
 	for _, line := range lines {
 		winner := hasWinner(line)
 		if winner != nil {
@@ -118,7 +120,7 @@ func findWinner(lines [][]Mark) Mark {
 	return EMPTY
 }
 
-func hasWinner(line []Mark) *Mark {
+func hasWinner(line Line) *Mark {
 	first := line[0]
 
 	if first == EMPTY {
