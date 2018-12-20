@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"github.com/jinzhu/copier"
 )
 
 type Mark string
@@ -18,15 +17,6 @@ const (
 type Board struct {
 	size  int
 	marks []Mark
-}
-
-func (board *Board) isMovePossible(target int) bool {
-	for _, mark := range board.GetPossibleMoves() {
-		if mark == target {
-			return true
-		}
-	}
-	return false
 }
 
 func NewBoard(size int) Board {
@@ -54,16 +44,29 @@ func (board *Board) GetPossibleMoves() []int {
 }
 
 func (board Board) MakeMove(move int, mark Mark) (Board, error) {
-	if !board.isMovePossible(move) {
+	if !board.IsMovePossible(move) {
 		return board, fmt.Errorf("position %d was already taken", move)
 	}
 
-	other := Board{}
-	err := copier.Copy(&other, &board)
+	other := Board{
+		size:  board.size,
+		marks: make([]Mark, len(board.marks)),
+	}
+
+	copy(other.marks, board.marks)
 
 	other.marks[move] = mark
 
-	return other, err
+	return other, nil
+}
+
+func (board *Board) IsMovePossible(target int) bool {
+	for _, mark := range board.GetPossibleMoves() {
+		if mark == target {
+			return true
+		}
+	}
+	return false
 }
 
 func (board *Board) Winner() Mark {
