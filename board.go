@@ -43,6 +43,10 @@ func (board *Board) GetPossibleMoves() []int {
 	return result
 }
 
+func (board Board) IsFull() bool {
+	return len(board.GetPossibleMoves()) == 0
+}
+
 func (board Board) MakeMove(move int, mark Mark) (Board, error) {
 	if !board.IsMovePossible(move) {
 		return board, fmt.Errorf("position %d was already taken", move)
