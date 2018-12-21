@@ -16,7 +16,6 @@ const (
 
 type Board struct {
 	size  int
-	marks []Mark
 	cells []Cell
 }
 
@@ -41,16 +40,13 @@ func takenBy(mark Mark) Cell {
 }
 
 func NewBoard(size int) Board {
-	marks := make([]Mark, size*size)
 	cells := make([]Cell, size*size)
-	for idx := range marks {
-		marks[idx] = EMPTY
+	for idx := range cells {
 		cells[idx] = aMove(idx)
 	}
 
 	return Board{
 		size:  size,
-		marks: marks,
 		cells: cells,
 	}
 }
@@ -58,9 +54,9 @@ func NewBoard(size int) Board {
 func (board *Board) GetPossibleMoves() []int {
 	result := make([]int, 0)
 
-	for idx, mark := range board.marks {
-		if mark == EMPTY {
-			result = append(result, idx)
+	for _, cell := range board.cells {
+		if cell.empty {
+			result = append(result, cell.move)
 		}
 	}
 
@@ -78,14 +74,11 @@ func (board Board) MakeMove(move int, mark Mark) (Board, error) {
 
 	other := Board{
 		size:  board.size,
-		marks: make([]Mark, len(board.marks)),
 		cells: make([]Cell, len(board.cells)),
 	}
 
-	copy(other.marks, board.marks)
 	copy(other.cells, board.cells)
 
-	other.marks[move] = mark
 	other.cells[move] = takenBy(mark)
 
 	return other, nil
