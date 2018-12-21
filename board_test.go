@@ -53,7 +53,7 @@ var _ = Describe("a board", func() {
 
 			actualWinner := b.Winner()
 
-			Expect(actualWinner).To(Equal(winner))
+			Expect(*actualWinner).To(Equal(winner))
 		},
 		Entry("first row", 0, 1, 2, O),
 		Entry("second row", 3, 4, 5, O),

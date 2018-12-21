@@ -18,10 +18,8 @@ func (computer *Computer) Opponent() Computer {
 	var other Mark
 	if computer.mark == X {
 		other = O
-	} else if computer.mark == O {
-		other = X
 	} else {
-		other = EMPTY
+		other = X
 	}
 
 	return Computer{
@@ -63,9 +61,9 @@ func scoreBoard(board Board, self Computer) int {
 	opponent := self.Opponent()
 	possibleWinner := board.Winner()
 
-	if possibleWinner == self.mark {
+	if self.mark.Is(possibleWinner) {
 		return amountOfRemainingMoves
-	} else if possibleWinner == opponent.mark {
+	} else if opponent.mark.Is(possibleWinner) {
 		return -10 + amountOfRemainingMoves
 	} else if board.IsFull() {
 		return 0

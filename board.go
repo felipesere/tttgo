@@ -9,10 +9,13 @@ type Mark string
 type Line = []Cell
 
 const (
-	X     Mark = "X"
-	O     Mark = "O"
-	EMPTY Mark = "-"
+	X Mark = "X"
+	O Mark = "O"
 )
+
+func (mark Mark) Is(other *Mark) bool {
+	return other != nil && mark == *other
+}
 
 type Board struct {
 	size  int
@@ -93,7 +96,7 @@ func (board *Board) IsMovePossible(target int) bool {
 	return false
 }
 
-func (board *Board) Winner() Mark {
+func (board *Board) Winner() *Mark {
 	lines := make([]Line, 0)
 
 	for idx := 0; idx < board.size; idx++ {
@@ -137,14 +140,14 @@ func diagonals(board *Board) []Line {
 	return []Line{diagonal_one, diagonal_two}
 }
 
-func findWinner(lines []Line) Mark {
+func findWinner(lines []Line) *Mark {
 	for _, line := range lines {
 		winner := hasWinner(line)
 		if winner != nil {
-			return *winner
+			return winner
 		}
 	}
-	return EMPTY
+	return nil
 }
 
 func hasWinner(line Line) *Mark {
