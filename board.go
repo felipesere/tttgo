@@ -6,7 +6,7 @@ import (
 
 type Mark string
 
-type Line = []Mark
+type Line = []Cell
 
 const (
 	X     Mark = "X"
@@ -101,7 +101,7 @@ func (board *Board) IsMovePossible(target int) bool {
 }
 
 func (board *Board) Winner() Mark {
-	lines := make([][]Mark, 0)
+	lines := make([]Line, 0)
 
 	for idx := 0; idx < board.size; idx++ {
 		lines = append(lines, rowAt(board, idx))
@@ -116,32 +116,32 @@ func (board *Board) Winner() Mark {
 func rowAt(board *Board, number int) Line {
 	beginning := number * board.size
 	end := beginning + board.size
-	return board.marks[beginning:end]
+	return board.cells[beginning:end]
 }
 
 func columnAt(board *Board, number int) Line {
-	column := make([]Mark, 0)
+	column := make([]Cell, 0)
 
 	for idx := 0; idx < board.size; idx++ {
 		realIndex := number + idx*board.size
-		column = append(column, board.marks[realIndex])
+		column = append(column, board.cells[realIndex])
 	}
 
 	return column
 }
 
 func diagonals(board *Board) []Line {
-	diagonal_one := make([]Mark, 0)
-	diagonal_two := make([]Mark, 0)
+	diagonal_one := make(Line, 0)
+	diagonal_two := make(Line, 0)
 
 	for idx := 0; idx < board.size; idx++ {
 		x := idx + idx*board.size
 		y := (idx + 1) * (board.size - 1)
-		diagonal_one = append(diagonal_one, board.marks[x])
-		diagonal_two = append(diagonal_two, board.marks[y])
+		diagonal_one = append(diagonal_one, board.cells[x])
+		diagonal_two = append(diagonal_two, board.cells[y])
 	}
 
-	return [][]Mark{diagonal_one, diagonal_two}
+	return []Line{diagonal_one, diagonal_two}
 }
 
 func findWinner(lines []Line) Mark {
@@ -157,13 +157,13 @@ func findWinner(lines []Line) Mark {
 func hasWinner(line Line) *Mark {
 	first := line[0]
 
-	if first == EMPTY {
+	if first.empty {
 		return nil
 	}
-	for _, mark := range line {
-		if mark != first {
+	for _, cell := range line {
+		if cell.mark != first.mark {
 			return nil
 		}
 	}
-	return &first
+	return &first.mark
 }
