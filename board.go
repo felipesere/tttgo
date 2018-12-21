@@ -17,17 +17,41 @@ const (
 type Board struct {
 	size  int
 	marks []Mark
+	cells []Cell
+}
+
+type Cell struct {
+	mark  Mark
+	move  int
+	empty bool
+}
+
+func aMove(move int) Cell {
+	return Cell{
+		move:  move,
+		empty: true,
+	}
+}
+
+func takenBy(mark Mark) Cell {
+	return Cell{
+		mark:  mark,
+		empty: false,
+	}
 }
 
 func NewBoard(size int) Board {
 	marks := make([]Mark, size*size)
+	cells := make([]Cell, size*size)
 	for idx := range marks {
 		marks[idx] = EMPTY
+		cells[idx] = aMove(idx)
 	}
 
 	return Board{
 		size:  size,
 		marks: marks,
+		cells: cells,
 	}
 }
 
@@ -55,11 +79,14 @@ func (board Board) MakeMove(move int, mark Mark) (Board, error) {
 	other := Board{
 		size:  board.size,
 		marks: make([]Mark, len(board.marks)),
+		cells: make([]Cell, len(board.cells)),
 	}
 
 	copy(other.marks, board.marks)
+	copy(other.cells, board.cells)
 
 	other.marks[move] = mark
+	other.cells[move] = takenBy(mark)
 
 	return other, nil
 }
