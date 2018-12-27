@@ -98,6 +98,16 @@ func (board *Board) Winner() *Mark {
 	return findWinner(lines)
 }
 
+func (board *Board) Rows() []Line {
+	lines := make([]Line, board.size)
+
+	for idx := 0; idx < board.size; idx++ {
+		lines[idx] = rowAt(board, idx)
+	}
+
+	return lines
+}
+
 func rowAt(board *Board, number int) Line {
 	beginning := number * board.size
 	end := beginning + board.size
