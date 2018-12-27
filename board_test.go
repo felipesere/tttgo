@@ -55,13 +55,13 @@ var _ = Describe("a board", func() {
 
 			Expect(*actualWinner).To(Equal(winner))
 		},
-		Entry("first row", 0, 1, 2, O),
-		Entry("second row", 3, 4, 5, O),
-		Entry("third row", 6, 7, 8, O),
-		Entry("first column", 0, 3, 6, O),
-		Entry("second column", 1, 4, 7, O),
-		Entry("third column", 2, 5, 8, O),
-		Entry("first diagonal", 0, 4, 8, O),
-		Entry("second diagonal", 2, 4, 6, O),
+		Entry("first row", 1, 2, 3, O),
+		Entry("second row", 4, 5, 6, O),
+		Entry("third row", 7, 8, 9, O),
+		Entry("first column", 1, 4, 7, O),
+		Entry("second column", 2, 5, 8, O),
+		Entry("third column", 3, 6, 9, O),
+		Entry("first diagonal", 1, 5, 9, O),
+		Entry("second diagonal", 3, 5, 7, O),
 	)
 })

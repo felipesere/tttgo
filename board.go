@@ -34,7 +34,7 @@ func takenBy(mark Mark) Cell {
 func NewBoard(size int) Board {
 	cells := make([]Cell, size*size)
 	for idx := range cells {
-		cells[idx] = aMove(idx)
+		cells[idx] = aMove(idx + 1)
 	}
 
 	return Board{
@@ -71,7 +71,7 @@ func (board Board) MakeMove(move int, mark Mark) (Board, error) {
 
 	copy(other.cells, board.cells)
 
-	other.cells[move] = takenBy(mark)
+	other.cells[move-1] = takenBy(mark)
 
 	return other, nil
 }

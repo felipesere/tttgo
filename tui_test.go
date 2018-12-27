@@ -37,4 +37,15 @@ var _ = Describe("the TUI", func() {
 [4][5][6]
 [7][8][9]`))
 	})
+
+	It("shows the placed markers", func() {
+		board, _ := emptyBoard.MakeMove(3, X)
+		board, _ = board.MakeMove(8, O)
+		tui.show(board)
+
+		Expect(output.printed).To(BeTheSameStringAs(
+			`[1][2][X]
+[4][5][6]
+[7][O][9]`))
+	})
 })

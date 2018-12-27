@@ -27,7 +27,7 @@ func formatRow(row Line) string {
 	output := ""
 	for _, cell := range row {
 		if cell.empty {
-			output += fmt.Sprintf("[%v]", cell.move+1)
+			output += fmt.Sprintf("[%v]", cell.move)
 		} else {
 			output += fmt.Sprintf("[%v]", cell.mark)
 		}
