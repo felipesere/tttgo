@@ -1,6 +1,15 @@
 package main
 
-type player interface {
+import (
+	"math/rand"
+	"time"
+)
+
+func init() {
+	rand.Seed(time.Now().Unix())
+}
+
+type Player interface {
 	MakeMove(board Board) Board
 }
 
@@ -8,7 +17,29 @@ type Computer struct {
 	mark Mark
 }
 
-func NewComputer(mark Mark) Computer {
+type Human struct {
+	mark    Mark
+	display Display
+}
+
+func (human Human) MakeMove(board Board) Board {
+	moves := board.GetPossibleMoves()
+
+	move := moves[rand.Intn(len(moves))]
+
+	result, _ := board.MakeMove(move, human.mark)
+
+	return result
+}
+
+func NewHuman(mark Mark, display Display) Player {
+	return Human{
+		mark:    mark,
+		display: display,
+	}
+}
+
+func NewComputer(mark Mark) Player {
 	return Computer{
 		mark: mark,
 	}
